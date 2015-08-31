@@ -7,10 +7,17 @@ Dotenv.load
 Mongoid.load!("mongoid.yml", :development)
 
 get '/' do
-	bob = Person.create( first_name: "Bob" )
+	bob = Person.create(
+		first_name:  "Bob",
+		middle_name: "Bobbertson",
+		last_name:   "The Third"
+	)
 
+	bob.last_name = "The Umpteenth"
 
-	"Hello. #{bob.first_name}"
+	bob.save!
+
+	"Hello. My name is #{bob.full_name}"
 end
 
 class Person
@@ -20,8 +27,8 @@ class Person
 	field :middle_name, type: String
 	field :last_name,   type: String
 
-	def first_name
-		"My name is #{self[:first_name]}"
+	def full_name
+		"My name is #{self[:first_name]} #{self[:middle_name]} #{self[:last_name]}"
 	end
 
 end
